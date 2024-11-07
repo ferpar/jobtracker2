@@ -64,6 +64,7 @@ model User {
     sessions      Session[]
     posts         Post[]
     topics        Topic[]
+    jobApplications JobApplication[]
 }
 
 model VerificationToken {
@@ -92,4 +93,29 @@ model Note {
     content         String
     topic           Topic       @relation(fields: [topicId], references: [id])
     topicId         String
+}
+
+model JobApplication {
+  id String @id @default(cuid())
+  jobTitle String
+  companyName String
+  companyUrl String
+  location String
+  appliedDate DateTime
+  contactPerson String
+  contactEmail String
+  notes String
+  resumeUrl String
+  jobDescriptionUrl String
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  statuses JobApplicationStatus[]
+}
+
+model JobApplicationStatus {
+  id String @id @default(cuid())
+  status String
+  date DateTime
+  jobApplication JobApplication @relation(fields: [jobApplicationId], references: [id])
+  jobApplicationId String
 }
