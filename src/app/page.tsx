@@ -4,6 +4,7 @@ import Head from "next/head";
 import { Header } from "~/components/Header";
 import { Content } from "~/components/Content";
 import React from "react";
+import { Applications } from "~/components/Applications";
 
 export default async function Home() {
   const session = await getServerAuthSession();
@@ -18,7 +19,7 @@ export default async function Home() {
       </Head>
       <main className="flex min-h-screen flex-col items-center">
         <Header sessionData={session} />
-        <Content sessionData={session}/>
+        <Applications sessionData={session}/>
       </main>
     </HydrateClient>
   );

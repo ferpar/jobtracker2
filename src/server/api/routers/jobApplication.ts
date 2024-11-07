@@ -6,13 +6,12 @@ const jobApplicationInputSchema = z.object({
   companyName: z.string(),
   companyUrl: z.string(),
   location: z.string(),
-  appliedDate: z.string(),
+  appliedDate: z.date(),
   contactPerson: z.string(),
   contactEmail: z.string(),
   notes: z.string(),
   resumeUrl: z.string(),
   jobDescriptionUrl: z.string(),
-  userId: z.string(),
 });
 
 export const jobApplicationRouter = createTRPCRouter({
