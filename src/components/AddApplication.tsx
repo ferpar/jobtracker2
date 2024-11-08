@@ -17,21 +17,32 @@ const defaultApplication: JobApplicationData = {
   jobDescriptionUrl: "",
 };
 
-export const AddApplication = ({ refetchApplications }: { refetchApplications: () => void}) => {
+export const AddApplication = ({
+  refetchApplications,
+}: {
+  refetchApplications: () => void;
+}) => {
   const createJobApplication = api.jobApplication.create.useMutation();
   const [application, setApplication] =
     useState<JobApplicationData>(defaultApplication);
-    
+
   const updateJobData = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    setApplication((prev: JobApplicationData) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    if (e.target.name === "appliedDate") {
+      setApplication((prev: JobApplicationData) => ({
+        ...prev,
+        appliedDate: new Date(e.target.value),
+      }));
+    } else {
+      setApplication((prev: JobApplicationData) => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+      }));
+    }
   };
 
-  const sumbitApplication = async (e: React.FormEvent<HTMLFormElement>) => { 
+  const sumbitApplication = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log(application);
     createJobApplication.mutate(application);
@@ -39,8 +50,7 @@ export const AddApplication = ({ refetchApplications }: { refetchApplications: (
     if (refetchApplications) {
       refetchApplications();
     }
-  }
-
+  };
 
   return (
     <form className="mt-4 flex flex-wrap" onSubmit={sumbitApplication}>
