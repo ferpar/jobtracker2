@@ -20,7 +20,7 @@ export const Header = ({ sessionData }: HeaderProps) => {
       <div className="flex-1 pl-5 text-3xl font-bold">
         {sessionData?.user?.name
           ? `Notes for ${sessionData.user.name}`
-          : "Welcome to Notetaker-T3"}
+          : "Welcome to Jtrackr"}
       </div>
       <div className="dropdown dropdown-end">
         {sessionData?.user ? (
