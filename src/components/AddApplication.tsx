@@ -3,7 +3,7 @@ import { useState } from "react";
 import type { JobApplication } from "@prisma/client";
 import { api } from "~/trpc/react";
 
-type JobApplicationData = Omit<JobApplication, "id" | "statuses" | "userId">;
+type JobApplicationData = Omit<JobApplication, "id" | "statuses" | "userId" | "deleted">;
 const defaultApplication: JobApplicationData = {
   jobTitle: "",
   companyName: "",

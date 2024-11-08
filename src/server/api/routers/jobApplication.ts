@@ -40,5 +40,17 @@ export const jobApplicationRouter = createTRPCRouter({
           }
         },
       });
-    })
+    }),
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.jobApplication.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          deleted: true
+        }
+      })
+    }),
 });

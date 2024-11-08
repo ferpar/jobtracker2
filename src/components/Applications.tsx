@@ -16,6 +16,15 @@ export const Applications = ({sessionData}: Props) => {
     }
   );
 
+  const deleteApplicationHook = api.jobApplication.delete.useMutation({
+    onSuccess: () => {
+      return refetchApplications();
+    },
+  });
+  const deleteApplication = (id: string) => {
+    deleteApplicationHook.mutate({id});
+  };
+
   if (!sessionData?.user) {
     return <div>Not logged in</div>;
   }
@@ -23,7 +32,7 @@ export const Applications = ({sessionData}: Props) => {
   return (
     <div className="px-4">
       <h1 className="text-3xl font-bold my-4">Applications</h1>
-      <ApplicationsList applications={jobApplications} />
+      <ApplicationsList applications={jobApplications} deleteApplication={deleteApplication} />
       <AddApplication refetchApplications={refetchApplications}/>
     </div>
   );
