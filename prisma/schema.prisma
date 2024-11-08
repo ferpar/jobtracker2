@@ -109,6 +109,7 @@ model JobApplication {
   jobDescriptionUrl String
   user User @relation(fields: [userId], references: [id])
   userId String
+  deleted Boolean @default(false)
   statuses JobApplicationStatus[]
 }
 
