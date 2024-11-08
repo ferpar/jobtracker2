@@ -22,7 +22,12 @@ export const AddApplication = ({
 }: {
   refetchApplications: () => void;
 }) => {
-  const createJobApplication = api.jobApplication.create.useMutation();
+  const createJobApplication = api.jobApplication.create.useMutation({
+    onSuccess: () => {
+      console.log("application created");
+      refetchApplications();
+    },
+  });
   const [application, setApplication] =
     useState<JobApplicationData>(defaultApplication);
 
@@ -47,9 +52,6 @@ export const AddApplication = ({
     console.log(application);
     createJobApplication.mutate(application);
     setApplication(defaultApplication);
-    if (refetchApplications) {
-      refetchApplications();
-    }
   };
 
   return (
