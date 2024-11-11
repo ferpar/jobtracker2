@@ -12,7 +12,7 @@ type Props = {
 export const Applications = ({sessionData}: Props) => {
   const [ formOpen, setFormOpen ] = React.useState(false);
 
-  const {data: jobApplications = [], refetch: refetchApplications } = api.jobApplication.getAll.useQuery(
+  const {data: jobApplications = [], refetch: refetchApplications, isLoading: loadingApplications } = api.jobApplication.getAll.useQuery(
     undefined,
     {
       enabled: sessionData?.user !== undefined,
@@ -45,7 +45,7 @@ export const Applications = ({sessionData}: Props) => {
         </button>
       </div>
       { formOpen ? <AddApplication refetchApplications={refetchApplications}/> : null }
-      <ApplicationsList applications={jobApplications} deleteApplication={deleteApplication} />
+      <ApplicationsList applications={jobApplications} deleteApplication={deleteApplication} loadingApplications={loadingApplications}/>
     </div>
   );
 }

@@ -1,9 +1,13 @@
-import type { JobApplication } from "@prisma/client";
+import type { JobApplication, JobApplicationStatus } from "@prisma/client";
 import { ConfirmButton } from "./ConfirmButton";
 import { ClosingX } from "./Icons";
 
+type JobApplicationWithStatus = JobApplication & {
+  statuses: JobApplicationStatus[];
+};
+
 type ApplicationsProps = {
-  applications: JobApplication[];
+  applications: JobApplicationWithStatus[];
   deleteApplication: (id: string) => void;
   loadingApplications?: boolean;
 };
@@ -36,6 +40,9 @@ export const ApplicationsList = ({
             <p>
               <strong>Applied:</strong>{" "}
               {application.appliedDate.toISOString().split("T")[0]}
+            </p>
+            <p><strong>Status:</strong>{" "}
+            {application?.statuses[0]?.status ?? "No status"}
             </p>
             <ConfirmButton
               buttonText={<ClosingX />}
