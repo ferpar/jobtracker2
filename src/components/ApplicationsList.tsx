@@ -5,11 +5,13 @@ import { ClosingX } from "./Icons";
 type ApplicationsProps = {
   applications: JobApplication[];
   deleteApplication: (id: string) => void;
+  loadingApplications?: boolean;
 };
 // applications list / cards
 export const ApplicationsList = ({
   applications,
   deleteApplication,
+  loadingApplications,
 }: ApplicationsProps) => {
   if (applications.length === 0) {
     return <p>No applications found</p>;
@@ -20,9 +22,9 @@ export const ApplicationsList = ({
   );
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-4 mt-4">
+    <div className="relative mt-4 grid grid-cols-1 gap-4 md:grid-cols-4">
       {filteredApplications?.map((application) => (
-        <div key={application.id} className="card shadow-lg relative">
+        <div key={application.id} className="card relative shadow-lg">
           <div className="card-body">
             <h2 className="card-title">{application.jobTitle}</h2>
             <p>
@@ -41,11 +43,19 @@ export const ApplicationsList = ({
               confirmClass="btn btn-circle btn-error absolute end-2 top-2"
               onClick={() => deleteApplication(application.id)}
             >
-              <ClosingX /> 
+              <ClosingX />
             </ConfirmButton>
           </div>
         </div>
       ))}
+      {loadingApplications ? (
+        <>
+          <div className="absolute inset-0 flex items-center justify-center bg-slate-500 opacity-30"></div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <span className="loading loading-bars loading-lg opacity-100"></span>
+          </div>
+        </>
+      ) : null}
     </div>
   );
 };
