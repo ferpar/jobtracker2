@@ -58,10 +58,10 @@ export const AddApplication = ({
   };
 
   return (
-    <form className="mt-4 flex flex-wrap mx-10" onSubmit={sumbitApplication}>
-      <div>
+    <form className="mt-4 py-4 px-10" style={{border: "solid 1px black", borderRadius: "10px"}} onSubmit={sumbitApplication}>
+      <div className="flex flex-wrap">
         <label>
-          Job Title
+          <p>Job Title</p>
           <input
             name="jobTitle"
             value={application.jobTitle}
@@ -70,7 +70,7 @@ export const AddApplication = ({
           />
         </label>
         <label>
-          Company Name
+          <p>Company Name</p>
           <input
             name="companyName"
             value={application.companyName}
@@ -79,7 +79,7 @@ export const AddApplication = ({
           />
         </label>
         <label>
-          company URL
+          <p>company URL</p>
           <input
             name="companyUrl"
             value={application.companyUrl}
@@ -87,8 +87,8 @@ export const AddApplication = ({
             type="text"
           />
         </label>
-        <label className="flex">
-          Location
+        <label>
+          <p>Location</p>
           <input
             name="location"
             value={application.location}
@@ -97,7 +97,7 @@ export const AddApplication = ({
           />
         </label>
         <label>
-          Date Applied
+          <p>Date Applied</p>
           <input
             name="appliedDate"
             value={application.appliedDate?.toISOString().split("T")[0]}
@@ -106,7 +106,7 @@ export const AddApplication = ({
           />
         </label>
         <label>
-          Contact Person
+          <p>Contact Person</p>
           <input
             name="contactPerson"
             value={application.contactPerson}
@@ -115,7 +115,7 @@ export const AddApplication = ({
           />
         </label>
         <label>
-          Contact Email
+          <p>Contact Email</p>
           <input
             name="contactEmail"
             value={application.contactEmail}
@@ -124,7 +124,7 @@ export const AddApplication = ({
           />
         </label>
         <label>
-          Resume URL
+          <p>Resume URL</p>
           <input
             name="resumeUrl"
             value={application.resumeUrl}
@@ -133,7 +133,7 @@ export const AddApplication = ({
           />
         </label>
         <label>
-          Job Description URL
+          <p>Job Description URL</p>
           <input
             name="jobDescriptionUrl"
             value={application.jobDescriptionUrl}
@@ -142,7 +142,7 @@ export const AddApplication = ({
           />
         </label>
         <label className="flex">
-          Notes
+          <p>Notes</p>
           <textarea
             name="notes"
             value={application.notes}
@@ -150,9 +150,11 @@ export const AddApplication = ({
           />
         </label>
       </div>
-      <button className="btn btn-primary" type="submit">
-        Add Application
-      </button>
+      <div className="flex justify-end">
+        <button className="btn btn-primary" type="submit">
+          Add Application
+        </button>
+      </div>
     </form>
   );
 };

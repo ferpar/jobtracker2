@@ -16,10 +16,10 @@ const githubImageLoader = ({
 
 export const Header = ({ sessionData }: HeaderProps) => {
   return (
-    <div className="navbar bg-primary text-primary-content">
+    <div className="navbar bg-info text-primary-content">
       <div className="flex-1 pl-5 text-3xl font-bold">
         {sessionData?.user?.name
-          ? `Notes for ${sessionData.user.name}`
+          ? `Applications for ${sessionData.user.name.split(" ")[0]}`
           : "Welcome to Jtrackr"}
       </div>
       <div className="dropdown dropdown-end">

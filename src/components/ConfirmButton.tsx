@@ -3,7 +3,7 @@ import React from "react";
 
 type Props = {
   children: React.ReactNode;
-  buttonText: string;
+  buttonText?: React.ReactNode;
   className?: string;
   onClick?: () => void;
   confirmClass?: string;
@@ -47,7 +47,7 @@ export const ConfirmButton: React.FC<Props> = ({
         setConfirm(true);
       }}
     >
-      {buttonText}
+      {buttonText ? buttonText : children}
     </button>
   );
 };

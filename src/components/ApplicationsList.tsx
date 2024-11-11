@@ -1,5 +1,6 @@
 import type { JobApplication } from "@prisma/client";
 import { ConfirmButton } from "./ConfirmButton";
+import { ClosingX } from "./ClosingX";
 
 type ApplicationsProps = {
   applications: JobApplication[];
@@ -19,9 +20,9 @@ export const ApplicationsList = ({
   );
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-4 mt-4">
       {filteredApplications?.map((application) => (
-        <div key={application.id} className="card shadow-lg">
+        <div key={application.id} className="card shadow-lg relative">
           <div className="card-body">
             <h2 className="card-title">{application.jobTitle}</h2>
             <p>
@@ -35,12 +36,12 @@ export const ApplicationsList = ({
               {application.appliedDate.toISOString().split("T")[0]}
             </p>
             <ConfirmButton
-              buttonText="Delete"
-              className="btn btn-primary"
-              confirmClass="btn btn-warning"
+              buttonText={<ClosingX />}
+              className="btn btn-circle absolute end-2 top-2"
+              confirmClass="btn btn-circle btn-error absolute end-2 top-2"
               onClick={() => deleteApplication(application.id)}
             >
-              Confirm Delete
+              <ClosingX /> 
             </ConfirmButton>
           </div>
         </div>
