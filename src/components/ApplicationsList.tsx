@@ -1,8 +1,9 @@
 import type { JobApplication, JobApplicationStatus } from "@prisma/client";
 import { ConfirmButton } from "./ConfirmButton";
 import { ClosingX } from "./Icons";
+import { type Filter, applicationStatuses, filterApplications } from "~/core/filtering";
 
-type JobApplicationWithStatus = JobApplication & {
+export type JobApplicationWithStatus = JobApplication & {
   statuses: JobApplicationStatus[];
 };
 
@@ -11,23 +12,8 @@ type ApplicationsProps = {
   deleteApplication: (id: string) => void;
   loadingApplications?: boolean;
   addStatus: (applicationId: string, status: string) => void;
+  filter?: Filter;
 };
-
-const unsuccessfulStatuses = ["Rejected", "Ghosted"] as const;
-const idleStatuses = ["Applied", "Easy Apply", "Viewed"] as const;
-const activeStatuses = [
-  "HR Phone Screen",
-  "HR Interview",
-  "Technical Interview",
-  "Final Interview",
-] as const;
-const successStatuses = ["Offer"] as const;
-const applicationStatuses = [
-  ...unsuccessfulStatuses,
-  ...idleStatuses,
-  ...activeStatuses,
-  ...successStatuses,
-] as const;
 
 // applications list / cards
 export const ApplicationsList = ({
@@ -35,19 +21,24 @@ export const ApplicationsList = ({
   deleteApplication,
   loadingApplications,
   addStatus,
+  filter = "All",
 }: ApplicationsProps) => {
   if (applications.length === 0) {
     return <p>No applications found</p>;
   }
 
-  const filteredApplications = applications.filter(
+  const nonDeletedApplications = applications.filter(
     (application) => !application.deleted,
   );
+  const filteredApplications = filterApplications(nonDeletedApplications, filter);
 
   return (
     <div className="relative mt-4 grid grid-cols-1 gap-4 md:grid-cols-4">
       {filteredApplications?.map((application) => {
-        const lastStatus = application?.statuses?.length !== 0 ?  application?.statuses[application?.statuses.length - 1]?.status : undefined;
+        const lastStatus =
+          application?.statuses?.length !== 0
+            ? application?.statuses[application?.statuses.length - 1]?.status
+            : undefined;
         return (
           <div key={application.id} className="card relative shadow-lg">
             <div className="card-body">
@@ -63,8 +54,7 @@ export const ApplicationsList = ({
                 {application.appliedDate.toISOString().split("T")[0]}
               </p>
               <p>
-                <strong>Status:</strong>{" "}
-                {lastStatus}
+                <strong>Status:</strong> {lastStatus}
               </p>
               <ConfirmButton
                 buttonText={<ClosingX />}
@@ -75,18 +65,20 @@ export const ApplicationsList = ({
                 <ClosingX />
               </ConfirmButton>
               <label className="mt-4 block">
-                <p><strong>Update Status:</strong></p>
-              <select
-                className="select select-bordered"
-                defaultValue={lastStatus}
-                onChange={(e) => addStatus(application.id, e.target.value)}
-              >
-                {applicationStatuses.map((status) => (
-                  <option key={status} value={status}>
-                    {status}
-                  </option>
-                ))}
-              </select>
+                <p>
+                  <strong>Update Status:</strong>
+                </p>
+                <select
+                  className="select select-bordered"
+                  defaultValue={lastStatus}
+                  onChange={(e) => addStatus(application.id, e.target.value)}
+                >
+                  {applicationStatuses.map((status) => (
+                    <option key={status} value={status}>
+                      {status}
+                    </option>
+                  ))}
+                </select>
               </label>
             </div>
           </div>
