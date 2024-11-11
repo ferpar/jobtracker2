@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
 import { api } from "~/trpc/react";
-import { ApplicationsList } from "./ApplicationsList";
+import { ApplicationsList, JobApplicationWithStatus } from "./ApplicationsList";
 import { AddApplication } from "./AddApplication";
 import { AddIcon } from "./Icons";
+import { Modal } from "./Modal";
+import { ApplicationDetails } from "./ApplicationDetails";
 import {
   type Filter,
   applicationStatuses,
@@ -18,6 +20,7 @@ type Props = {
 export const Applications = ({ sessionData }: Props) => {
   const [formOpen, setFormOpen] = React.useState(false);
   const [filter, setFilter] = React.useState<Filter>("All");
+  const [viewDetails, setViewDetails] = React.useState("testid");
 
   const {
     data: jobApplications = [],
@@ -50,8 +53,8 @@ export const Applications = ({ sessionData }: Props) => {
   }
 
   return (
-    <div className="px-4">
-      <div className="my-4 flex items-center gap-4 flex-col md:flex-row md:flex-wrap">
+    <div className="isolate px-4">
+      <div className="my-4 flex flex-col items-center gap-4 md:flex-row md:flex-wrap">
         <h2 className="flex-1 text-2xl font-bold">Your Applications</h2>
         <select
           className="select select-bordered"
@@ -91,6 +94,13 @@ export const Applications = ({ sessionData }: Props) => {
         addStatus={addStatus}
         filter={filter}
       />
+      {jobApplications.length > 0 && (
+        <ApplicationDetails
+          application={jobApplications[0] as JobApplicationWithStatus}
+          isOpen={!!viewDetails}
+          onClose={() => setViewDetails("")}
+        />
+      )}
     </div>
   );
 };
