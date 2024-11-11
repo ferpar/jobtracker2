@@ -1,7 +1,11 @@
 import type { JobApplication, JobApplicationStatus } from "@prisma/client";
 import { ConfirmButton } from "./ConfirmButton";
 import { ClosingX } from "./Icons";
-import { type Filter, applicationStatuses, filterApplications } from "~/core/filtering";
+import {
+  type Filter,
+  applicationStatuses,
+  filterApplications,
+} from "~/core/filtering";
 
 export type JobApplicationWithStatus = JobApplication & {
   statuses: JobApplicationStatus[];
@@ -13,6 +17,7 @@ type ApplicationsProps = {
   loadingApplications?: boolean;
   addStatus: (applicationId: string, status: string) => void;
   filter?: Filter;
+  viewDetails?: (id: string) => void;
 };
 
 // applications list / cards
@@ -22,6 +27,7 @@ export const ApplicationsList = ({
   loadingApplications,
   addStatus,
   filter = "All",
+  viewDetails = () => {},
 }: ApplicationsProps) => {
   if (applications.length === 0) {
     return <p>No applications found</p>;
@@ -30,7 +36,10 @@ export const ApplicationsList = ({
   const nonDeletedApplications = applications.filter(
     (application) => !application.deleted,
   );
-  const filteredApplications = filterApplications(nonDeletedApplications, filter);
+  const filteredApplications = filterApplications(
+    nonDeletedApplications,
+    filter,
+  );
 
   return (
     <div className="relative mt-4 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -80,6 +89,12 @@ export const ApplicationsList = ({
                   ))}
                 </select>
               </label>
+              <button
+                className="btn mt-4"
+                onClick={() => viewDetails(application.id)}
+              >
+                View Details
+              </button>
             </div>
           </div>
         );

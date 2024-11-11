@@ -20,7 +20,7 @@ type Props = {
 export const Applications = ({ sessionData }: Props) => {
   const [formOpen, setFormOpen] = React.useState(false);
   const [filter, setFilter] = React.useState<Filter>("All");
-  const [viewDetails, setViewDetails] = React.useState("testid");
+  const [viewDetailsId, setViewDetailsId] = React.useState("");
 
   const {
     data: jobApplications = [],
@@ -29,6 +29,10 @@ export const Applications = ({ sessionData }: Props) => {
   } = api.jobApplication.getAll.useQuery(undefined, {
     enabled: sessionData?.user !== undefined,
   });
+
+  const selectedApplication = jobApplications.find(
+    (app) => app.id === viewDetailsId,
+  );
 
   const deleteApplicationHook = api.jobApplication.delete.useMutation({
     onSuccess: () => {
@@ -93,12 +97,13 @@ export const Applications = ({ sessionData }: Props) => {
         loadingApplications={loadingApplications}
         addStatus={addStatus}
         filter={filter}
+        viewDetails={(id) => setViewDetailsId(id)}
       />
-      {jobApplications.length > 0 && (
+      {jobApplications.length > 0 && selectedApplication && (
         <ApplicationDetails
-          application={jobApplications[0] as JobApplicationWithStatus}
-          isOpen={!!viewDetails}
-          onClose={() => setViewDetails("")}
+          application={selectedApplication}
+          isOpen={!!viewDetailsId}
+          onClose={() => setViewDetailsId("")}
         />
       )}
     </div>
