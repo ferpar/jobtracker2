@@ -3,6 +3,7 @@ import React from "react";
 import { api } from "~/trpc/react";
 import { ApplicationsList } from "./ApplicationsList";
 import { AddApplication } from "./AddApplication";
+import { AddIcon } from "./Icons";
 import type { Session } from "next-auth";
 type Props = {
   sessionData: Session | null;
@@ -36,10 +37,11 @@ export const Applications = ({sessionData}: Props) => {
       <div className="flex items-center my-4 gap-4">
         <h2 className="text-2xl font-bold flex-1">Your Applications</h2>
         <button
-          className={formOpen ? "btn btn-secondary" : "btn btn-primary"}
+          className={"btn btn-primary" + (formOpen ? " btn-outline" : "")}
           onClick={() => setFormOpen(!formOpen)}
         >
-          Add Applications
+          <AddIcon />
+          <span className="ml-2">Add Application</span>
         </button>
       </div>
       { formOpen ? <AddApplication refetchApplications={refetchApplications}/> : null }

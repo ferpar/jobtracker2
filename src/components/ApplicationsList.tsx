@@ -1,6 +1,6 @@
 import type { JobApplication } from "@prisma/client";
 import { ConfirmButton } from "./ConfirmButton";
-import { ClosingX } from "./ClosingX";
+import { ClosingX } from "./Icons";
 
 type ApplicationsProps = {
   applications: JobApplication[];

@@ -24,7 +24,12 @@ export const ConfirmButton: React.FC<Props> = ({
       // clicking outside the button will reset the confirm state
       const reset = () => setConfirm(false);
       document.addEventListener("click", reset);
-      return () => document.removeEventListener("click", reset);
+      // on blur will also reset the confirm state
+      document.activeElement?.addEventListener("blur", reset);
+      return () => {
+        document.removeEventListener("click", reset);
+        document.activeElement?.removeEventListener("blur", reset);
+      }
     }
   }, [confirm, committed]);
 
