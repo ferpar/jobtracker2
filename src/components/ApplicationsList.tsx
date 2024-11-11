@@ -33,7 +33,7 @@ export const ApplicationsList = ({
   const filteredApplications = filterApplications(nonDeletedApplications, filter);
 
   return (
-    <div className="relative mt-4 grid grid-cols-1 gap-4 md:grid-cols-4">
+    <div className="relative mt-4 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
       {filteredApplications?.map((application) => {
         const lastStatus =
           application?.statuses?.length !== 0

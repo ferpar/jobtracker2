@@ -51,7 +51,7 @@ export const Applications = ({ sessionData }: Props) => {
 
   return (
     <div className="px-4">
-      <div className="my-4 flex items-center gap-4">
+      <div className="my-4 flex items-center gap-4 flex-col md:flex-row md:flex-wrap">
         <h2 className="flex-1 text-2xl font-bold">Your Applications</h2>
         <select
           className="select select-bordered"

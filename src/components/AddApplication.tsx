@@ -58,95 +58,128 @@ export const AddApplication = ({
   };
 
   return (
-    <form className="mt-4 py-4 px-10" style={{border: "solid 1px black", borderRadius: "10px"}} onSubmit={sumbitApplication}>
+    <form
+      className="mt-4 px-10 py-4"
+      style={{ border: "solid 1px black", borderRadius: "10px" }}
+      onSubmit={sumbitApplication}
+    >
       <div className="flex flex-wrap">
-        <label>
+        <label className="flex-1">
           <p>Job Title</p>
+
           <input
+            className="input"
             name="jobTitle"
             value={application.jobTitle}
             onChange={updateJobData}
             type="text"
+            placeholder="Software Engineer"
           />
         </label>
-        <label>
+        <label className="flex-1">
           <p>Company Name</p>
+
           <input
+            className="input"
             name="companyName"
             value={application.companyName}
             onChange={updateJobData}
             type="text"
+            placeholder="Google"
           />
         </label>
-        <label>
+        <label className="flex-1">
           <p>company URL</p>
+
           <input
+            className="input"
             name="companyUrl"
             value={application.companyUrl}
             onChange={updateJobData}
             type="text"
+            placeholder="https://www.google.com"
           />
         </label>
-        <label>
+        <label className="flex-1">
           <p>Location</p>
+
           <input
+            className="input"
             name="location"
             value={application.location}
             onChange={updateJobData}
             type="text"
+            placeholder="Mountain View, CA"
           />
         </label>
-        <label>
+        <label className="flex-1">
           <p>Date Applied</p>
+
           <input
+            className="input"
             name="appliedDate"
             value={application.appliedDate?.toISOString().split("T")[0]}
             onChange={updateJobData}
             type="date"
           />
         </label>
-        <label>
+        <label className="flex-1">
           <p>Contact Person</p>
+
           <input
+            className="input"
             name="contactPerson"
             value={application.contactPerson}
             onChange={updateJobData}
             type="text"
+            placeholder="Hiring Manager"
           />
         </label>
-        <label>
+        <label className="flex-1">
           <p>Contact Email</p>
+
           <input
+            className="input"
             name="contactEmail"
             value={application.contactEmail}
             onChange={updateJobData}
             type="email"
+            placeholder="johndoe@email.com"
           />
         </label>
-        <label>
+        <label className="flex-1">
           <p>Resume URL</p>
+
           <input
+            className="input"
             name="resumeUrl"
             value={application.resumeUrl}
             onChange={updateJobData}
             type="url"
+            placeholder="https://www.myweb.com/resume.pdf"
           />
         </label>
-        <label>
+        <label className="flex-1">
           <p>Job Description URL</p>
           <input
+            className="input"
             name="jobDescriptionUrl"
             value={application.jobDescriptionUrl}
             onChange={updateJobData}
             type="url"
+            placeholder="https://www.companyweb.com/jobdescription.pdf"
           />
         </label>
-        <label className="flex">
+      </div>
+      <div className="my-2">
+        <label className="flex flex-col">
           <p>Notes</p>
           <textarea
+            className="textarea flex-1"
             name="notes"
             value={application.notes}
             onChange={updateJobData}
+            placeholder="Notes about the job"
           />
         </label>
       </div>
