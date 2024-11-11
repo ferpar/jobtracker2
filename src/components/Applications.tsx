@@ -28,6 +28,15 @@ export const Applications = ({sessionData}: Props) => {
     deleteApplicationHook.mutate({id});
   };
 
+  const addStatusHook = api.jobApplication.addStatus.useMutation({
+    onSuccess: () => {
+      return refetchApplications();
+    },
+  });
+  const addStatus = (applicationId: string, status: string) => {
+    addStatusHook.mutate({id: applicationId, status, date: new Date()});
+  }
+
   if (!sessionData?.user) {
     return <div>Not logged in</div>;
   }
@@ -45,7 +54,12 @@ export const Applications = ({sessionData}: Props) => {
         </button>
       </div>
       { formOpen ? <AddApplication refetchApplications={refetchApplications}/> : null }
-      <ApplicationsList applications={jobApplications} deleteApplication={deleteApplication} loadingApplications={loadingApplications}/>
+      <ApplicationsList 
+        applications={jobApplications} 
+        deleteApplication={deleteApplication} 
+        loadingApplications={loadingApplications}
+        addStatus={addStatus}
+        />
     </div>
   );
 }

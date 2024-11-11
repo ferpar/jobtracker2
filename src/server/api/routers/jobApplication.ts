@@ -41,6 +41,18 @@ export const jobApplicationRouter = createTRPCRouter({
         },
       });
     }),
+  addStatus: protectedProcedure
+    .input(z.object({ id: z.string(), status: z.string(), date: z.date() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.jobApplicationStatus.create({
+        data: {
+          status: input.status,
+          date: input.date,
+          jobApplicationId: input.id
+        }
+      })
+    }
+  ),
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
