@@ -65,4 +65,16 @@ export const jobApplicationRouter = createTRPCRouter({
         }
       })
     }),
+  update: protectedProcedure
+    .input(z.object({ id: z.string() }).merge(jobApplicationInputSchema))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.jobApplication.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          ...input
+        }
+      })
+    }),
 });

@@ -10,9 +10,12 @@ type ApplicationDetailsProps = {
 export const ApplicationDetails = ({ application, onClose, isOpen }: ApplicationDetailsProps) => {
   return (
     <Modal
-      modalTitle={application.jobTitle}
-      modalContent={
+      isOpen={isOpen}
+      onClose={onClose}
+      withButton
+    >
         <>
+          <h3 className="text-lg font-bold">{application.jobTitle}</h3>
           <p>
             <strong>Company:</strong> {application.companyName}
           </p>
@@ -52,10 +55,7 @@ export const ApplicationDetails = ({ application, onClose, isOpen }: Application
             </a>
           </p>
         </>
-      }
-      isOpen={isOpen}
-      onClose={onClose}
-      withButton
-    />
+
+    </Modal>
   );
 };
