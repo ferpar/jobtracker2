@@ -1,13 +1,7 @@
 "use client";
-import { useState } from "react";
-import type { JobApplication } from "@prisma/client";
-import { api } from "~/trpc/react";
 import { ApplicationsForm } from "./ApplicationsForm";
+import type { JobApplicationData } from "./Applications";
 
-type JobApplicationData = Omit<
-  JobApplication,
-  "id" | "statuses" | "userId" | "deleted"
->;
 const defaultApplication: JobApplicationData = {
   jobTitle: "",
   companyName: "",
@@ -22,22 +16,18 @@ const defaultApplication: JobApplicationData = {
 };
 
 export const AddApplication = ({
-  refetchApplications,
+  createJobApplication,
   application = defaultApplication,
 }: {
-  refetchApplications: () => void;
+  createJobApplication: (data: JobApplicationData) => void;
   application?: JobApplicationData;
 }) => {
-  const createJobApplication = api.jobApplication.create.useMutation({
-    onSuccess: () => {
-      refetchApplications();
-    },
-  });
-
   return (
     <ApplicationsForm
       applicationData={application}
-      onSubmit={(data) => { createJobApplication.mutate(data); }}
+      onSubmit={(data) => {
+        createJobApplication(data);
+      }}
     />
   );
 };

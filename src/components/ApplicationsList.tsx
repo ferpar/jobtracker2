@@ -18,6 +18,7 @@ type ApplicationsProps = {
   addStatus: (applicationId: string, status: string) => void;
   filter?: Filter;
   viewDetails?: (id: string) => void;
+  viewEdit?: (id: string) => void;
 };
 
 // applications list / cards
@@ -27,7 +28,12 @@ export const ApplicationsList = ({
   loadingApplications,
   addStatus,
   filter = "All",
-  viewDetails = () => {},
+  viewDetails = () => {
+    return;
+  },
+  viewEdit = () => {
+    return;
+  },
 }: ApplicationsProps) => {
   if (applications.length === 0) {
     return <p>No applications found</p>;
@@ -39,7 +45,7 @@ export const ApplicationsList = ({
   const filteredApplications = filterApplications(
     nonDeletedApplications,
     filter,
-  );
+  ).sort((a, b) => a.appliedDate.getTime() - b.appliedDate.getTime());
 
   return (
     <div className="relative mt-4 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -94,6 +100,12 @@ export const ApplicationsList = ({
                 onClick={() => viewDetails(application.id)}
               >
                 View Details
+              </button>
+              <button
+                className="btn mt-4"
+                onClick={() => viewEdit(application.id)}
+              >
+                Edit
               </button>
             </div>
           </div>

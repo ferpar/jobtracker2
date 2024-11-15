@@ -1,17 +1,23 @@
 "use client";
 import React from "react";
 import { api } from "~/trpc/react";
-import { ApplicationsList, JobApplicationWithStatus } from "./ApplicationsList";
+import { ApplicationsList } from "./ApplicationsList";
 import { AddApplication } from "./AddApplication";
 import { AddIcon } from "./Icons";
-import { Modal } from "./Modal";
 import { ApplicationDetails } from "./ApplicationDetails";
 import {
   type Filter,
   applicationStatuses,
   groupFilters,
 } from "~/core/filtering";
+import type { JobApplication } from "@prisma/client";
 import type { Session } from "next-auth";
+import { EditApplication } from "./EditApplication";
+
+export type JobApplicationData = Omit<
+  JobApplication,
+  "id" | "statuses" | "userId" | "deleted"
+>;
 
 type Props = {
   sessionData: Session | null;
@@ -21,6 +27,7 @@ export const Applications = ({ sessionData }: Props) => {
   const [formOpen, setFormOpen] = React.useState(false);
   const [filter, setFilter] = React.useState<Filter>("All");
   const [viewDetailsId, setViewDetailsId] = React.useState("");
+  const [viewEditId, setViewEditId] = React.useState("");
 
   const {
     data: jobApplications = [],
@@ -31,7 +38,7 @@ export const Applications = ({ sessionData }: Props) => {
   });
 
   const selectedApplication = jobApplications.find(
-    (app) => app.id === viewDetailsId,
+    (app) => app.id === viewDetailsId || app.id === viewEditId,
   );
 
   const deleteApplicationHook = api.jobApplication.delete.useMutation({
@@ -41,6 +48,25 @@ export const Applications = ({ sessionData }: Props) => {
   });
   const deleteApplication = (id: string) => {
     deleteApplicationHook.mutate({ id });
+  };
+
+  const createJobApplicationHook = api.jobApplication.create.useMutation({
+    onSuccess: () => {
+      return refetchApplications();
+    },
+  });
+  const createJobApplication = (data: JobApplicationData) => {
+    createJobApplicationHook.mutate(data);
+  };
+
+  const updateApplicationHook = api.jobApplication.update.useMutation({
+    onSuccess: () => {
+      return refetchApplications();
+    },
+  });
+
+  const updateApplication = (data: JobApplicationData & {id:string}) => {
+    updateApplicationHook.mutate(data);
   };
 
   const addStatusHook = api.jobApplication.addStatus.useMutation({
@@ -89,7 +115,7 @@ export const Applications = ({ sessionData }: Props) => {
         </button>
       </div>
       {formOpen ? (
-        <AddApplication refetchApplications={refetchApplications} />
+        <AddApplication createJobApplication={createJobApplication} />
       ) : null}
       <ApplicationsList
         applications={jobApplications}
@@ -98,12 +124,21 @@ export const Applications = ({ sessionData }: Props) => {
         addStatus={addStatus}
         filter={filter}
         viewDetails={(id) => setViewDetailsId(id)}
+        viewEdit={(id) => setViewEditId(id)}
       />
       {jobApplications.length > 0 && selectedApplication && (
         <ApplicationDetails
           application={selectedApplication}
           isOpen={!!viewDetailsId}
           onClose={() => setViewDetailsId("")}
+        />
+      )}
+      {jobApplications.length > 0 && selectedApplication && (
+        <EditApplication
+          updateApplication={updateApplication}
+          application={selectedApplication}
+          isOpen={!!viewEditId}
+          onClose={() => setViewEditId("")}
         />
       )}
     </div>

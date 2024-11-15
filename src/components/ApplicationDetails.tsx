@@ -36,23 +36,24 @@ export const ApplicationDetails = ({ application, onClose, isOpen }: Application
             <strong>Email:</strong> {application.contactEmail}
           </p>
           <p>
-            <strong>Notes:</strong> {application.notes}
-          </p>
-          <p>
             <strong>Resume:</strong>{" "}
-            <a href={application.resumeUrl} target="_blank" rel="noreferrer">
+            <a className="link" href={application.resumeUrl} target="_blank" rel="noreferrer">
               {application.resumeUrl}
             </a>
           </p>
           <p>
             <strong>Job Description:</strong>{" "}
             <a
+              className="link"
               href={application.jobDescriptionUrl}
               target="_blank"
               rel="noreferrer"
             >
               {application.jobDescriptionUrl}
             </a>
+          </p>
+          <p>
+            <strong>Notes:</strong> {application.notes}
           </p>
         </>
 

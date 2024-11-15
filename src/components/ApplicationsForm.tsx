@@ -5,7 +5,7 @@ import type { JobApplication } from "@prisma/client";
 type JobApplicationData = Omit<
   JobApplication,
   "id" | "statuses" | "userId" | "deleted"
->;
+> & { id?: string };
 
 const defaultApplication: JobApplicationData = {
   jobTitle: "",
@@ -24,6 +24,7 @@ type ApplicationsFormProps = {
   applicationData?: JobApplicationData;
   onSubmit?: (data: JobApplicationData) => void;
   onClose?: () => void;
+  submitText?: string;
 };
 
 export const ApplicationsForm = ({
@@ -32,6 +33,7 @@ export const ApplicationsForm = ({
     console.log("no submit handler provided", data);
   },
   onClose,
+  submitText = "Add Application",
 }: ApplicationsFormProps) => {
   const [application, setApplication] =
     useState<JobApplicationData>(applicationData);
@@ -55,6 +57,7 @@ export const ApplicationsForm = ({
   const submitApplication = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit(application);
+    setApplication(defaultApplication);
     onClose && onClose();
   };
 
@@ -64,7 +67,7 @@ export const ApplicationsForm = ({
       style={{ border: "solid 1px black", borderRadius: "10px" }}
       onSubmit={submitApplication}
     >
-      <div className="flex flex-wrap">
+      <div className="flex flex-wrap gap-3">
         <label className="flex-1">
           <p>Job Title</p>
 
@@ -186,7 +189,7 @@ export const ApplicationsForm = ({
       </div>
       <div className="flex justify-end">
         <button className="btn btn-primary" type="submit">
-          Add Application
+          {submitText ?? "Add Application"}
         </button>
         {onClose && (
           <button className="btn btn-secondary" onClick={onClose}>
