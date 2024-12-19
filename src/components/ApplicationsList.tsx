@@ -27,7 +27,6 @@ export const ApplicationsList = ({
   deleteApplication,
   loadingApplications,
   addStatus,
-  filter = "All",
   viewDetails = () => {
     return;
   },
@@ -39,17 +38,9 @@ export const ApplicationsList = ({
     return <p>No applications found</p>;
   }
 
-  const nonDeletedApplications = applications.filter(
-    (application) => !application.deleted,
-  );
-  const filteredApplications = filterApplications(
-    nonDeletedApplications,
-    filter,
-  ).sort((a, b) => a.appliedDate.getTime() - b.appliedDate.getTime());
-
   return (
     <div className="relative mt-4 grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
-      {filteredApplications?.map((application) => {
+      {applications?.map((application) => {
         const lastStatus =
           application?.statuses?.length !== 0
             ? application?.statuses[application?.statuses.length - 1]?.status

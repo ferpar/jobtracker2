@@ -9,6 +9,7 @@ import {
   type Filter,
   applicationStatuses,
   groupFilters,
+  filterApplications
 } from "~/core/filtering";
 import type { JobApplication } from "@prisma/client";
 import type { Session } from "next-auth";
@@ -78,6 +79,15 @@ export const Applications = ({ sessionData }: Props) => {
     addStatusHook.mutate({ id: applicationId, status, date: new Date() });
   };
 
+
+  const nonDeletedApplications = jobApplications.filter(
+    (application) => !application.deleted,
+  );
+  const filteredApplications = filterApplications(
+    nonDeletedApplications,
+    filter,
+  ).sort((a, b) => a.appliedDate.getTime() - b.appliedDate.getTime());
+
   if (!sessionData?.user) {
     return <div>Not logged in</div>;
   }
@@ -86,6 +96,11 @@ export const Applications = ({ sessionData }: Props) => {
     <div className="isolate px-4">
       <div className="my-4 flex flex-col items-center gap-4 md:flex-row md:flex-wrap">
         <h2 className="flex-1 text-2xl font-bold">Your Applications</h2>
+        <div>
+          <p className="text-sm text-gray-500">
+            {filteredApplications.length} applications
+          </p>
+        </div>
         <select
           className="select select-bordered"
           value={filter}
@@ -118,11 +133,10 @@ export const Applications = ({ sessionData }: Props) => {
         <AddApplication createJobApplication={createJobApplication} />
       ) : null}
       <ApplicationsList
-        applications={jobApplications}
+        applications={filteredApplications}
         deleteApplication={deleteApplication}
         loadingApplications={loadingApplications}
         addStatus={addStatus}
-        filter={filter}
         viewDetails={(id) => setViewDetailsId(id)}
         viewEdit={(id) => setViewEditId(id)}
       />
